@@ -201,3 +201,66 @@ models:
 
       - name: _last_modified_at
         description: "{{ doc('stg_last_modified_at') }}"
+
+  - name: stg_postgres__fleet_logistics_logs
+    description: >
+      One row per feedstock pickup, typed from the raw_record VARIANT.
+      Includes pickups removed from the source, flagged by
+      is_current_in_source.
+    columns:
+      - name: pickup_id
+        description: Pickup identifier, in the form PU-000001.
+        tests:
+          - unique
+          - not_null
+
+      - name: supplier_id
+        description: Supplier the feedstock was collected from.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_postgres__suppliers')
+                field: supplier_id
+
+      - name: plant_id
+        description: Plant the feedstock was delivered to.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_postgres__plants')
+                field: plant_id
+
+      - name: waste_type
+        description: Feedstock collected.
+
+      - name: pickup_status
+        description: State of the pickup in the source.
+
+      - name: driver_name
+        description: Driver on the run.
+
+      - name: vehicle_plate
+        description: Registration plate of the vehicle.
+
+      - name: quantity_tons
+        description: Feedstock collected, tonnes.
+
+      - name: distance_km
+        description: Distance driven on the run, kilometres.
+
+      - name: pickup_datetime
+        description: When the pickup happened. Stored with its UTC offset.
+
+      - name: last_snapshot_date
+        description: "{{ doc('stg_last_snapshot_date') }}"
+
+      - name: is_current_in_source
+        description: "{{ doc('stg_is_current_in_source') }}"
+
+      - name: _source_file_name
+        description: "{{ doc('stg_source_file_name') }}"
+
+      - name: _last_modified_at
+        description: "{{ doc('stg_last_modified_at') }}"
