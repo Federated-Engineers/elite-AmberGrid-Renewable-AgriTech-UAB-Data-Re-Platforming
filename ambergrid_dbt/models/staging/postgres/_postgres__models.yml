@@ -88,3 +88,60 @@ models:
 
       - name: _last_modified_at
         description: "{{ doc('stg_last_modified_at') }}"
+
+  - name: stg_postgres__supplier_contracts
+    description: >
+      One row per supplier contract, typed from the raw_record VARIANT.
+      Includes contracts removed from the source, flagged by
+      is_current_in_source.
+    columns:
+      - name: contract_id
+        description: Contract identifier, in the form CTR-00001.
+        tests:
+          - unique
+          - not_null
+
+      - name: supplier_id
+        description: Supplier the waste is bought from.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_postgres__suppliers')
+                field: supplier_id
+
+      - name: plant_id
+        description: Plant the waste is delivered to.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_postgres__plants')
+                field: plant_id
+
+      - name: waste_type
+        description: Feedstock covered by the contract.
+
+      - name: contract_status
+        description: Contract status in the source. Does not always agree with the dates.
+
+      - name: price_per_ton_eur
+        description: Agreed price per tonne of feedstock, EUR.
+
+      - name: contract_start_date
+        description: Date the contract starts.
+
+      - name: contract_end_date
+        description: Date the contract ends.
+
+      - name: last_snapshot_date
+        description: "{{ doc('stg_last_snapshot_date') }}"
+
+      - name: is_current_in_source
+        description: "{{ doc('stg_is_current_in_source') }}"
+
+      - name: _source_file_name
+        description: "{{ doc('stg_source_file_name') }}"
+
+      - name: _last_modified_at
+        description: "{{ doc('stg_last_modified_at') }}"

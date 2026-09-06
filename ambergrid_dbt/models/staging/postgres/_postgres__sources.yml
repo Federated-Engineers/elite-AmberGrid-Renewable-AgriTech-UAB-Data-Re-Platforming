@@ -93,3 +93,42 @@ sources:
 
           - name: loaded_at
             description: "{{ doc('bronze_loaded_at') }}"
+
+      - name: supplier_contracts
+        identifier: pg_supplier_contracts
+        description: One row per supplier contract. Merged on contract_id.
+        columns:
+          - name: raw_record
+            description: >
+              Source row as received, keyed by column name. Keys: contract_id,
+              supplier_id, plant_id, waste_type, status, price_per_ton_eur,
+              contract_start_date, contract_end_date.
+            tests:
+              - not_null
+
+          - name: source_table
+            description: "{{ doc('bronze_source_table') }}"
+            tests:
+              - accepted_values:
+                  arguments:
+                    values: ['supplier_contracts']
+
+          - name: snapshot_date
+            description: "{{ doc('bronze_snapshot_date') }}"
+            tests:
+              - not_null
+
+          - name: source_file_name
+            description: "{{ doc('bronze_source_file_name') }}"
+
+          - name: file_row_number
+            description: "{{ doc('bronze_file_row_number') }}"
+
+          - name: file_last_modified
+            description: "{{ doc('bronze_file_last_modified') }}"
+
+          - name: file_content_key
+            description: "{{ doc('bronze_file_content_key') }}"
+
+          - name: loaded_at
+            description: "{{ doc('bronze_loaded_at') }}"
