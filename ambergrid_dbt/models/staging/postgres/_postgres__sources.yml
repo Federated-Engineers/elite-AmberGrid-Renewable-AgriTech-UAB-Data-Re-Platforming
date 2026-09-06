@@ -3,13 +3,9 @@ version: 2
 sources:
   - name: postgres
     description: >
-      Operational Postgres database behind the AmberGrid plant and commercial
-      systems, landed into Snowflake bronze layer daily by Airflow.
-
-      Each table is loaded with a MERGE keyed on its business key, so bronze
-      holds exactly one row per key and needs no deduplication in staging.
-      The merge has no delete branch. A row removed upstream stays in bronze
-      with a stale snapshot_date, which is how staging detects it.
+      AmberGrid operational Postgres, landed into bronze daily by Airflow.
+      Each table is merged on its business key, so bronze holds one row per
+      key. The merge never deletes.
 
     database: "{{ target.database }}"
     schema: bronze
@@ -22,21 +18,18 @@ sources:
     tables:
       - name: plants
         identifier: pg_plants
-        description: >
-          One row per production plant. Reference data for the biogas and
-          vermicomposting sites AmberGrid operates across the Baltics.
-          Merged on plant_id.
-
-          raw_record keys: plant_id, plant_name, plant_type, city, country,
-          commissioned_date, capacity_tons_per_day, num_bioreactors.
+        description: One row per plant. Merged on plant_id.
         columns:
           - name: raw_record
-            description: Source row as received from ambergrid.plants, keyed by column name.
+            description: >
+              Source row as received, keyed by column name. Keys: plant_id,
+              plant_name, plant_type, city, country, commissioned_date,
+              capacity_tons_per_day, num_bioreactors.
             tests:
               - not_null
 
           - name: source_table
-            description: Source table in the ambergrid schema.
+            description: Table name in the ambergrid schema.
             tests:
               - not_null
               - accepted_values:
@@ -44,34 +37,25 @@ sources:
                     values: ['plants']
 
           - name: snapshot_date
-            description: >
-              Date the row was last seen in the source. Refreshed by the merge
-              on every run, whether or not the row changed.
+            description: Date the row was last seen in the source.
             tests:
               - not_null
 
           - name: source_file_name
-            description: >
-              METADATA$FILENAME of the staged file the row came from, in the
-              form plants/snapshot_date=YYYY-MM-DD/plants.json.gz.
+            description: Staged file the row was loaded from.
             tests:
               - not_null
 
           - name: file_row_number
-            description: METADATA$FILE_ROW_NUMBER, position of the row within its file.
+            description: Row position within the staged file.
 
           - name: file_last_modified
-            description: METADATA$FILE_LAST_MODIFIED, when the staged file was last written.
+            description: When the staged file was last written.
 
           - name: file_content_key
-            description: >
-              METADATA$FILE_CONTENT_KEY, file checksum. Identical values on
-              consecutive snapshot dates mean the source did not change.
+            description: Checksum of the staged file.
 
           - name: loaded_at
-            description: >
-              When the merge last inserted or updated this row. Left untouched
-              when a run finds the row unchanged, so this is a last modified
-              timestamp, not a load timestamp.
+            description: When the merge last inserted or updated the row.
             tests:
               - not_null
