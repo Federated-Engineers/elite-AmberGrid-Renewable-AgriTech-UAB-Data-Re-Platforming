@@ -29,33 +29,67 @@ sources:
               - not_null
 
           - name: source_table
-            description: Table name in the ambergrid schema.
+            description: "{{ doc('bronze_source_table') }}"
             tests:
-              - not_null
               - accepted_values:
                   arguments:
                     values: ['plants']
 
           - name: snapshot_date
-            description: Date the row was last seen in the source.
+            description: "{{ doc('bronze_snapshot_date') }}"
             tests:
               - not_null
 
           - name: source_file_name
-            description: Staged file the row was loaded from.
-            tests:
-              - not_null
+            description: "{{ doc('bronze_source_file_name') }}"
 
           - name: file_row_number
-            description: Row position within the staged file.
+            description: "{{ doc('bronze_file_row_number') }}"
 
           - name: file_last_modified
-            description: When the staged file was last written.
+            description: "{{ doc('bronze_file_last_modified') }}"
 
           - name: file_content_key
-            description: Checksum of the staged file.
+            description: "{{ doc('bronze_file_content_key') }}"
 
           - name: loaded_at
-            description: When the merge last inserted or updated the row.
+            description: "{{ doc('bronze_loaded_at') }}"
+
+      - name: suppliers
+        identifier: pg_suppliers
+        description: One row per supplier. Merged on supplier_id.
+        columns:
+          - name: raw_record
+            description: >
+              Source row as received, keyed by column name. Keys: supplier_id,
+              company_name, supplier_type, contact_name, contact_email,
+              contact_phone, city, country.
             tests:
               - not_null
+
+          - name: source_table
+            description: "{{ doc('bronze_source_table') }}"
+            tests:
+              - accepted_values:
+                  arguments:
+                    values: ['suppliers']
+
+          - name: snapshot_date
+            description: "{{ doc('bronze_snapshot_date') }}"
+            tests:
+              - not_null
+
+          - name: source_file_name
+            description: "{{ doc('bronze_source_file_name') }}"
+
+          - name: file_row_number
+            description: "{{ doc('bronze_file_row_number') }}"
+
+          - name: file_last_modified
+            description: "{{ doc('bronze_file_last_modified') }}"
+
+          - name: file_content_key
+            description: "{{ doc('bronze_file_content_key') }}"
+
+          - name: loaded_at
+            description: "{{ doc('bronze_loaded_at') }}"

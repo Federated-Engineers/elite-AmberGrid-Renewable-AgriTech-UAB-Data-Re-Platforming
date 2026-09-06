@@ -33,14 +33,58 @@ models:
       - name: commissioned_date
         description: Date the plant entered service.
 
-      - name: last_seen_date
-        description: Date the plant was last present in a source load.
+      - name: last_snapshot_date
+        description: "{{ doc('stg_last_snapshot_date') }}"
 
       - name: is_current_in_source
-        description: False once the plant is removed upstream. The merge never deletes.
+        description: "{{ doc('stg_is_current_in_source') }}"
 
       - name: _source_file_name
-        description: Staged file the row came from. Audit only.
+        description: "{{ doc('stg_source_file_name') }}"
 
       - name: _last_modified_at
-        description: When the merge last changed the row. Audit only.
+        description: "{{ doc('stg_last_modified_at') }}"
+
+  - name: stg_postgres__suppliers
+    description: >
+      One row per supplier, typed from the raw_record VARIANT. Includes
+      suppliers removed from the source, flagged by is_current_in_source.
+    columns:
+      - name: supplier_id
+        description: Supplier identifier, in the form SUP-0001.
+        tests:
+          - unique
+          - not_null
+
+      - name: company_name
+        description: Registered company name.
+
+      - name: supplier_type
+        description: Type of supplier business.
+
+      - name: contact_name
+        description: Named contact at the supplier.
+
+      - name: contact_email
+        description: Contact email address.
+
+      - name: contact_phone
+        description: Contact phone. Format is not standardised in the source.
+
+      - name: city
+        description: City the supplier operates in.
+
+      - name: country
+        description: Country the supplier operates in.
+
+      - name: last_snapshot_date
+        description: "{{ doc('stg_last_snapshot_date') }}"
+
+      - name: is_current_in_source
+        description: "{{ doc('stg_is_current_in_source') }}"
+
+      - name: _source_file_name
+        description: "{{ doc('stg_source_file_name') }}"
+
+      - name: _last_modified_at
+        description: "{{ doc('stg_last_modified_at') }}"
