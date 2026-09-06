@@ -132,3 +132,43 @@ sources:
 
           - name: loaded_at
             description: "{{ doc('bronze_loaded_at') }}"
+
+      - name: fertilizer_sales_invoices
+        identifier: pg_fertilizer_sales_invoices
+        description: One row per sales invoice. Merged on invoice_id.
+        columns:
+          - name: raw_record
+            description: >
+              Source row as received, keyed by column name. Keys: invoice_id,
+              plant_id, customer_name, product_type, payment_status,
+              quantity_tons, unit_price_eur, total_amount_eur, invoice_date,
+              due_date.
+            tests:
+              - not_null
+
+          - name: source_table
+            description: "{{ doc('bronze_source_table') }}"
+            tests:
+              - accepted_values:
+                  arguments:
+                    values: ['fertilizer_sales_invoices']
+
+          - name: snapshot_date
+            description: "{{ doc('bronze_snapshot_date') }}"
+            tests:
+              - not_null
+
+          - name: source_file_name
+            description: "{{ doc('bronze_source_file_name') }}"
+
+          - name: file_row_number
+            description: "{{ doc('bronze_file_row_number') }}"
+
+          - name: file_last_modified
+            description: "{{ doc('bronze_file_last_modified') }}"
+
+          - name: file_content_key
+            description: "{{ doc('bronze_file_content_key') }}"
+
+          - name: loaded_at
+            description: "{{ doc('bronze_loaded_at') }}"
