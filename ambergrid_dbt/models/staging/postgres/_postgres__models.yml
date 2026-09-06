@@ -1,0 +1,56 @@
+version: 2
+
+models:
+  - name: stg_postgres__plants
+    description: >
+      One row per production plant, including plants no longer present in the
+      source. Cleaned and typed from the raw_record VARIANT, no business logic
+      applied. Use is_current_in_source to exclude retired plants.
+      Feeds dim_plant.
+    columns:
+      - name: plant_id
+        description: Natural key of the plant, in the form PLANT-001.
+        tests:
+          - unique
+          - not_null
+
+      - name: plant_name
+        description: >
+          Display name of the site. Not unique. Two plants in the same city can
+          share a name.
+
+      - name: plant_type
+        description: Kind of facility operated at the site.
+
+      - name: city
+        description: City the plant operates in.
+
+      - name: country
+        description: >
+          Country the plant operates in.
+
+      - name: capacity_tons_per_day
+        description: Rated processing capacity of the plant in tonnes per day.
+
+      - name: num_bioreactors
+        description: Count of bioreactors installed at the plant.
+
+      - name: commissioned_date
+        description: Date the plant entered service.
+
+      - name: last_seen_date
+        description: >
+          Date this plant was last present in a source load. A row sitting
+          behind the maximum is no longer in the source.
+
+      - name: is_current_in_source
+        description: >
+          True when the plant appeared in the most recent load. False means it
+          was removed upstream, since the bronze merge never deletes.
+
+      - name: _source_file_name
+        description: Staged file the row came from. Audit only.
+
+      - name: _last_modified_at
+        description: >
+          When the bronze merge last inserted or updated this row. Audit only.
