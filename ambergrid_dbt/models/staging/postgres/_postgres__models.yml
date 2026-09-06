@@ -264,3 +264,50 @@ models:
 
       - name: _last_modified_at
         description: "{{ doc('stg_last_modified_at') }}"
+
+  - name: stg_postgres__gas_grid_injection_daily
+    description: >
+      One row per plant per day of biomethane injection, typed from the
+      raw_record VARIANT. Includes records removed from the source, flagged by
+      is_current_in_source.
+    columns:
+      - name: record_id
+        description: Injection record identifier, in the form GGI-000001.
+        tests:
+          - unique
+          - not_null
+
+      - name: plant_id
+        description: Plant that injected the gas.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_postgres__plants')
+                field: plant_id
+
+      - name: injection_date
+        description: Day the gas was injected into the grid.
+        tests:
+          - not_null
+
+      - name: biomethane_volume_nm3
+        description: Biomethane injected, normal cubic metres.
+
+      - name: injection_pressure_bar
+        description: Injection pressure, bar.
+
+      - name: revenue_eur
+        description: Revenue earned on the injection, EUR.
+
+      - name: last_snapshot_date
+        description: "{{ doc('stg_last_snapshot_date') }}"
+
+      - name: is_current_in_source
+        description: "{{ doc('stg_is_current_in_source') }}"
+
+      - name: _source_file_name
+        description: "{{ doc('stg_source_file_name') }}"
+
+      - name: _last_modified_at
+        description: "{{ doc('stg_last_modified_at') }}"
