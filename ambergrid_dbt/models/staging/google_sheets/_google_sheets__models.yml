@@ -66,3 +66,60 @@ models:
 
       - name: _last_modified_at
         description: "{{ doc('stg_last_modified_at') }}"
+
+  - name: stg_google_sheets__subsidy_grants
+    description: >
+      One row per subsidy grant, cast from the all text raw_record VARIANT.
+      Includes grants removed from the source, flagged by is_current_in_source.
+    columns:
+      - name: grant_id
+        description: Grant identifier, in the form GRT-0001.
+        tests:
+          - unique
+          - not_null
+
+      - name: plant_id
+        description: Plant the grant was awarded for.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_postgres__plants')
+                field: plant_id
+
+      - name: subsidy_type
+        description: Grant scheme the award falls under.
+
+      - name: granting_authority
+        description: Body that awarded the grant.
+
+      - name: officer_name
+        description: Officer who handled the award.
+
+      - name: approval_status
+        description: Approval state of the grant.
+
+      - name: amount_eur
+        description: Amount awarded, EUR.
+        tests:
+          - not_null
+
+      - name: grant_date
+        description: Date the grant was awarded.
+        tests:
+          - not_null
+
+      - name: _sheet_row_number
+        description: "{{ doc('bronze_sheet_row_number') }}"
+
+      - name: last_snapshot_date
+        description: "{{ doc('stg_last_snapshot_date') }}"
+
+      - name: is_current_in_source
+        description: "{{ doc('stg_is_current_in_source') }}"
+
+      - name: _source_file_name
+        description: "{{ doc('stg_source_file_name') }}"
+
+      - name: _last_modified_at
+        description: "{{ doc('stg_last_modified_at') }}"
