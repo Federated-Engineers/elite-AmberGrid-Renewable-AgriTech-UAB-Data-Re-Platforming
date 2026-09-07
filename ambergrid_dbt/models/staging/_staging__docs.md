@@ -51,3 +51,13 @@ Staged file the row came from. Audit only.
 {% docs stg_last_modified_at %}
 When the merge last changed the row. Audit only.
 {% enddocs %}
+
+
+{% docs bronze_worksheet_name %}
+Source worksheet tab name.
+{% enddocs %}
+
+
+{% docs bronze_sheet_row_number %}
+Row number in the worksheet itself, the header being row 1.
+{% enddocs %}
