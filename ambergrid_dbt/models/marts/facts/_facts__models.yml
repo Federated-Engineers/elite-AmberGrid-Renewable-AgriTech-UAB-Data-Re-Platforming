@@ -1,0 +1,44 @@
+version: 2
+
+models:
+  - name: fct_gas_grid_injection_daily
+    description: >
+      One row per plant per day of biomethane injection into the grid.
+      Includes records removed from the source, filter on is_current_in_source
+      to exclude them.
+    columns:
+      - name: record_id
+        description: Injection record identifier, in the form GGI-000001.
+        tests:
+          - unique
+          - not_null
+
+      - name: plant_id
+        description: Plant that injected the gas.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_plant')
+                field: plant_id
+
+      - name: injection_date
+        description: Day the gas was injected into the grid.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_date')
+                field: date_day
+
+      - name: biomethane_volume_nm3
+        description: Biomethane injected, normal cubic metres.
+
+      - name: injection_pressure_bar
+        description: Injection pressure, bar.
+
+      - name: revenue_eur
+        description: Revenue earned on the injection, EUR.
+
+      - name: is_current_in_source
+        description: False once the record is removed from the source system.

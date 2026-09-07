@@ -1,0 +1,83 @@
+version: 2
+
+models:
+  - name: dim_date
+    description: >
+      One row per calendar day from 2018-01-01 to 2031-12-31.
+    columns:
+      - name: date_day
+        description: The calendar day. Primary key.
+        tests:
+          - unique
+          - not_null
+
+      - name: year_number
+        description: Calendar year.
+
+      - name: quarter_number
+        description: Calendar quarter, 1 to 4.
+
+      - name: month_number
+        description: Calendar month, 1 to 12.
+
+      - name: month_name
+        description: Full month name.
+
+      - name: day_of_month
+        description: Day within the month.
+
+      - name: day_name
+        description: Three letter day name.
+
+      - name: week_of_year
+        description: ISO week number.
+
+      - name: month_start_date
+        description: First day of the month.
+
+      - name: month_end_date
+        description: Last day of the month.
+
+      - name: quarter_start_date
+        description: First day of the quarter.
+
+      - name: year_start_date
+        description: First day of the year.
+
+      - name: is_weekend
+        description: True for Saturday and Sunday.
+
+  - name: dim_plant
+    description: >
+      One row per production plant. Includes plants removed from the source,
+      filter on is_current_in_source to exclude them.
+    columns:
+      - name: plant_id
+        description: Plant identifier, in the form PLANT-001.
+        tests:
+          - unique
+          - not_null
+
+      - name: plant_name
+        description: Site name. Not unique, do not join on it.
+
+      - name: plant_type
+        description: Type of facility at the site.
+
+      - name: city
+        description: City the plant operates in.
+
+      - name: country
+        description: Country the plant operates in.
+
+      - name: capacity_tons_per_day
+        description: Rated processing capacity, tonnes per day.
+
+      - name: num_bioreactors
+        description: Bioreactors installed at the plant.
+
+      - name: commissioned_date
+        description: Date the plant entered service.
+
+      - name: is_current_in_source
+        description: False once the plant is removed from the source system.
