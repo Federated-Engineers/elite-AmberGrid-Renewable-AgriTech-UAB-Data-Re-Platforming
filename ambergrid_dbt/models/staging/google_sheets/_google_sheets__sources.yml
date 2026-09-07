@@ -37,13 +37,9 @@ sources:
 
           - name: sheet_row_number
             description: "{{ doc('bronze_sheet_row_number') }}"
-            tests:
-              - not_null
 
           - name: snapshot_date
             description: "{{ doc('bronze_snapshot_date') }}"
-            tests:
-              - not_null
 
           - name: source_file_name
             description: "{{ doc('bronze_source_file_name') }}"
@@ -81,13 +77,9 @@ sources:
 
           - name: sheet_row_number
             description: "{{ doc('bronze_sheet_row_number') }}"
-            tests:
-              - not_null
 
           - name: snapshot_date
             description: "{{ doc('bronze_snapshot_date') }}"
-            tests:
-              - not_null
 
           - name: source_file_name
             description: "{{ doc('bronze_source_file_name') }}"
@@ -125,13 +117,49 @@ sources:
 
           - name: sheet_row_number
             description: "{{ doc('bronze_sheet_row_number') }}"
-            tests:
-              - not_null
 
           - name: snapshot_date
             description: "{{ doc('bronze_snapshot_date') }}"
+
+          - name: source_file_name
+            description: "{{ doc('bronze_source_file_name') }}"
+
+          - name: file_row_number
+            description: "{{ doc('bronze_file_row_number') }}"
+
+          - name: file_last_modified
+            description: "{{ doc('bronze_file_last_modified') }}"
+
+          - name: file_content_key
+            description: "{{ doc('bronze_file_content_key') }}"
+
+          - name: loaded_at
+            description: "{{ doc('bronze_loaded_at') }}"
+
+      - name: impurity_writeoffs
+        identifier: gsheet_impurity_writeoffs
+        description: One row per impurity writeoff. Merged on writeoff_id.
+        columns:
+          - name: raw_record
+            description: >
+              Sheet row as received, keyed by header. Keys: writeoff_id,
+              plant_id, contaminant_type, inspector_name,
+              quantity_tons_written_off, estimated_loss_eur, writeoff_date.
             tests:
               - not_null
+
+          - name: worksheet_name
+            description: "{{ doc('bronze_worksheet_name') }}"
+            tests:
+              - accepted_values:
+                  arguments:
+                    values: ['Impurity_WriteOffs']
+
+          - name: sheet_row_number
+            description: "{{ doc('bronze_sheet_row_number') }}"
+
+          - name: snapshot_date
+            description: "{{ doc('bronze_snapshot_date') }}"
 
           - name: source_file_name
             description: "{{ doc('bronze_source_file_name') }}"

@@ -32,22 +32,22 @@ models:
         description: Free text note. Blank cells arrive as an empty string.
 
       - name: nitrogen_pct
-        description: Nitrogen content, percent. Null means the cell was not numeric.
+        description: Nitrogen content, percent.
         tests:
           - not_null
 
       - name: phosphorus_pct
-        description: Phosphorus content, percent. Null means the cell was not numeric.
+        description: Phosphorus content, percent.
         tests:
           - not_null
 
       - name: potassium_pct
-        description: Potassium content, percent. Null means the cell was not numeric.
+        description: Potassium content, percent.
         tests:
           - not_null
 
       - name: sample_date
-        description: Date the sample was taken. Null means the cell was not a date.
+        description: Date the sample was taken.
         tests:
           - not_null
 
@@ -155,6 +155,63 @@ models:
 
       - name: effective_date
         description: Date the new price takes effect.
+          - not_null
+
+      - name: _sheet_row_number
+        description: "{{ doc('bronze_sheet_row_number') }}"
+
+      - name: last_snapshot_date
+        description: "{{ doc('stg_last_snapshot_date') }}"
+
+      - name: is_current_in_source
+        description: "{{ doc('stg_is_current_in_source') }}"
+
+      - name: _source_file_name
+        description: "{{ doc('stg_source_file_name') }}"
+
+      - name: _last_modified_at
+        description: "{{ doc('stg_last_modified_at') }}"
+
+  - name: stg_google_sheets__impurity_writeoffs
+    description: >
+      One row per impurity writeoff, cast from the all text raw_record VARIANT.
+      Includes writeoffs removed from the source, flagged by
+      is_current_in_source.
+    columns:
+      - name: writeoff_id
+        description: Writeoff identifier, in the form WO-0001.
+        tests:
+          - unique
+          - not_null
+
+      - name: plant_id
+        description: Plant the material was written off at.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_postgres__plants')
+                field: plant_id
+
+      - name: contaminant_type
+        description: Contaminant found in the feedstock.
+
+      - name: inspector_name
+        description: Inspector who recorded the writeoff.
+
+      - name: quantity_tons_written_off
+        description: Material written off, tonnes.
+        tests:
+          - not_null
+
+      - name: estimated_loss_eur
+        description: Estimated value of the loss, EUR.
+        tests:
+          - not_null
+
+      - name: writeoff_date
+        description: Date the writeoff was recorded.
+        tests:
           - not_null
 
       - name: _sheet_row_number
