@@ -123,3 +123,51 @@ models:
 
       - name: _last_modified_at
         description: "{{ doc('stg_last_modified_at') }}"
+
+  - name: stg_google_sheets__fertilizer_price_adjustments
+    description: >
+      One row per fertilizer price adjustment, cast from the all text
+      raw_record VARIANT. Includes adjustments removed from the source,
+      flagged by is_current_in_source.
+    columns:
+      - name: adjustment_id
+        description: Adjustment identifier, in the form PA-0001.
+        tests:
+          - unique
+          - not_null
+
+      - name: product_type
+        description: Fertilizer product the new price applies to.
+
+      - name: adjustment_reason
+        description: Stated reason for the price change.
+
+      - name: approved_by
+        description: Person who approved the change.
+
+      - name: old_price_eur
+        description: Price before the change, EUR.
+
+      - name: new_price_eur
+        description: Price after the change, EUR.
+        tests:
+          - not_null
+
+      - name: effective_date
+        description: Date the new price takes effect.
+          - not_null
+
+      - name: _sheet_row_number
+        description: "{{ doc('bronze_sheet_row_number') }}"
+
+      - name: last_snapshot_date
+        description: "{{ doc('stg_last_snapshot_date') }}"
+
+      - name: is_current_in_source
+        description: "{{ doc('stg_is_current_in_source') }}"
+
+      - name: _source_file_name
+        description: "{{ doc('stg_source_file_name') }}"
+
+      - name: _last_modified_at
+        description: "{{ doc('stg_last_modified_at') }}"
