@@ -42,3 +42,61 @@ models:
 
       - name: is_current_in_source
         description: False once the record is removed from the source system.
+
+  - name: fct_fertilizer_sales_invoice
+    description: >
+      One row per fertilizer sales invoice. Includes invoices removed from the
+      source, filter on is_current_in_source to exclude them.
+    columns:
+      - name: invoice_id
+        description: Invoice identifier, in the form INV-000001.
+        tests:
+          - unique
+          - not_null
+
+      - name: plant_id
+        description: Plant that produced the goods invoiced.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_plant')
+                field: plant_id
+
+      - name: customer_name
+        description: Customer as free text.
+
+      - name: product_type
+        description: Fertilizer product sold.
+
+      - name: payment_status
+        description: Payment state of the invoice.
+
+      - name: quantity_tons
+        description: Quantity invoiced, tonnes.
+
+      - name: unit_price_eur
+        description: Price per tonne, EUR.
+
+      - name: total_amount_eur
+        description: Invoice total, EUR. Equals quantity_tons times unit_price_eur.
+
+      - name: invoice_date
+        description: Date the invoice was raised.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_date')
+                field: date_day
+
+      - name: due_date
+        description: Date payment falls due.
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_date')
+                field: date_day
+
+      - name: is_current_in_source
+        description: False once the invoice is removed from the source system.
