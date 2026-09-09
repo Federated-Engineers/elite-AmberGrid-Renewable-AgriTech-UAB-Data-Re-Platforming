@@ -100,3 +100,123 @@ models:
 
       - name: is_current_in_source
         description: False once the invoice is removed from the source system.
+
+  - name: fct_feedstock_pickup
+    description: >
+      One row per feedstock pickup from a supplier. Includes pickups removed
+      from the source, filter on is_current_in_source to exclude them.
+    columns:
+      - name: pickup_id
+        description: Pickup identifier, in the form PU-000001.
+        tests:
+          - unique
+          - not_null
+
+      - name: supplier_id
+        description: Supplier the feedstock was collected from.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_supplier')
+                field: supplier_id
+
+      - name: plant_id
+        description: Plant the feedstock was delivered to.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_plant')
+                field: plant_id
+
+      - name: waste_type
+        description: Feedstock collected.
+
+      - name: pickup_status
+        description: State of the pickup in the source.
+
+      - name: driver_name
+        description: Driver on the run.
+
+      - name: vehicle_plate
+        description: Registration plate of the vehicle.
+
+      - name: quantity_tons
+        description: Feedstock collected, tonnes.
+
+      - name: distance_km
+        description: Distance driven on the run, kilometres.
+
+      - name: pickup_datetime
+        description: When the pickup happened. Stored with its UTC offset.
+
+      - name: pickup_date
+        description: Date of the pickup, derived from pickup_datetime.
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_date')
+                field: date_day
+
+      - name: is_current_in_source
+        description: False once the pickup is removed from the source system.
+
+  - name: fct_supplier_contract
+    description: >
+      One row per supply contract between a supplier and a plant. Includes
+      contracts removed from the source, filter on is_current_in_source to
+      exclude them.
+    columns:
+      - name: contract_id
+        description: Contract identifier, in the form CTR-00001.
+        tests:
+          - unique
+          - not_null
+
+      - name: supplier_id
+        description: Supplier the waste is bought from.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_supplier')
+                field: supplier_id
+
+      - name: plant_id
+        description: Plant the waste is delivered to.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_plant')
+                field: plant_id
+
+      - name: waste_type
+        description: Feedstock covered by the contract.
+
+      - name: contract_status
+        description: >
+          Contract status in the source.
+
+      - name: price_per_ton_eur
+        description: Agreed price per tonne of feedstock, EUR.
+
+      - name: contract_start_date
+        description: Date the contract starts.
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_date')
+                field: date_day
+
+      - name: contract_end_date
+        description: Date the contract ends.
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_date')
+                field: date_day
+
+      - name: is_current_in_source
+        description: False once the contract is removed from the source system.
