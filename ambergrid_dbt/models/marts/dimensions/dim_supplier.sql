@@ -1,15 +1,8 @@
 with
 
-suppliers as (
-
-    select * from {{ ref('stg_postgres__suppliers') }}
-
-),
-
-final as (
+stg_postgres__suppliers as (
 
     select
-
         supplier_id,
         company_name,
         supplier_type,
@@ -19,9 +12,8 @@ final as (
         city,
         country,
         is_current_in_source
-
-    from suppliers
+    from {{ ref('stg_postgres__suppliers') }}
 
 )
 
-select * from final
+select * from stg_postgres__suppliers

@@ -1,15 +1,8 @@
 with
 
-batches as (
-
-    select * from {{ ref('stg_google_sheets__npk_lab_batches') }}
-
-),
-
-final as (
+stg_google_sheets__npk_lab_batches as (
 
     select
-
         batch_id,
         plant_id,
         batch_status,
@@ -20,9 +13,8 @@ final as (
         potassium_pct,
         sample_date,
         is_current_in_source
-
-    from batches
+    from {{ ref('stg_google_sheets__npk_lab_batches') }}
 
 )
 
-select * from final
+select * from stg_google_sheets__npk_lab_batches

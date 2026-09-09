@@ -1,8 +1,13 @@
 with
 
-source as (
+postgres_fleet_logistics_logs as (
 
-    select * from {{ source('postgres', 'fleet_logistics_logs') }}
+    select
+        raw_record,
+        snapshot_date,
+        source_file_name,
+        loaded_at
+    from {{ source('postgres', 'fleet_logistics_logs') }}
 
 ),
 
@@ -25,7 +30,7 @@ renamed as (
         source_file_name::varchar as _source_file_name,
         loaded_at::timestamp_ltz as _last_modified_at
 
-    from source
+    from postgres_fleet_logistics_logs
 
 )
 

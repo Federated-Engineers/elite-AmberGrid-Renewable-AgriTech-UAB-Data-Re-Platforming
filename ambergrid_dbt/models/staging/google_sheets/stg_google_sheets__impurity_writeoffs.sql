@@ -1,8 +1,14 @@
 with
 
-source as (
+google_sheets_impurity_writeoffs as (
 
-    select * from {{ source('google_sheets', 'impurity_writeoffs') }}
+    select
+        raw_record,
+        sheet_row_number,
+        snapshot_date,
+        source_file_name,
+        loaded_at
+    from {{ source('google_sheets', 'impurity_writeoffs') }}
 
 ),
 
@@ -23,7 +29,7 @@ renamed as (
         source_file_name::varchar as _source_file_name,
         loaded_at::timestamp_ltz as _last_modified_at
 
-    from source
+    from google_sheets_impurity_writeoffs
 
 )
 

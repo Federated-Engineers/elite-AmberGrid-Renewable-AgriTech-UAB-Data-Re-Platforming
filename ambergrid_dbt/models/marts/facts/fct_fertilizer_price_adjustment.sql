@@ -1,15 +1,8 @@
 with
 
-adjustments as (
-
-    select * from {{ ref('stg_google_sheets__fertilizer_price_adjustments') }}
-
-),
-
-final as (
+stg_google_sheets__fertilizer_price_adjustments as (
 
     select
-
         adjustment_id,
         product_type,
         adjustment_reason,
@@ -18,9 +11,8 @@ final as (
         new_price_eur,
         effective_date,
         is_current_in_source
-
-    from adjustments
+    from {{ ref('stg_google_sheets__fertilizer_price_adjustments') }}
 
 )
 
-select * from final
+select * from stg_google_sheets__fertilizer_price_adjustments

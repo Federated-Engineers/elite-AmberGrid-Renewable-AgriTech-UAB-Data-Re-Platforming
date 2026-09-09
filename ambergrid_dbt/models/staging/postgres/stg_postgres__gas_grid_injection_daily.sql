@@ -1,8 +1,13 @@
 with
 
-source as (
+postgres_gas_grid_injection_daily as (
 
-    select * from {{ source('postgres', 'gas_grid_injection_daily') }}
+    select
+        raw_record,
+        snapshot_date,
+        source_file_name,
+        loaded_at
+    from {{ source('postgres', 'gas_grid_injection_daily') }}
 
 ),
 
@@ -21,7 +26,7 @@ renamed as (
         source_file_name::varchar as _source_file_name,
         loaded_at::timestamp_ltz as _last_modified_at
 
-    from source
+    from postgres_gas_grid_injection_daily
 
 )
 

@@ -1,15 +1,8 @@
 with
 
-readings as (
-
-    select * from {{ ref('stg_scada__telemetry') }}
-
-),
-
-final as (
+stg_scada__telemetry as (
 
     select
-
         event_id,
         plant_id,
         bioreactor_id,
@@ -22,9 +15,8 @@ final as (
         is_gas_leak_alarm_triggered,
         reading_at,
         reading_date
-
-    from readings
+    from {{ ref('stg_scada__telemetry') }}
 
 )
 
-select * from final
+select * from stg_scada__telemetry

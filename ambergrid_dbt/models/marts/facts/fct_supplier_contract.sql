@@ -1,15 +1,8 @@
 with
 
-contracts as (
-
-    select * from {{ ref('stg_postgres__supplier_contracts') }}
-
-),
-
-final as (
+stg_postgres__supplier_contracts as (
 
     select
-
         contract_id,
         supplier_id,
         plant_id,
@@ -19,9 +12,8 @@ final as (
         contract_start_date,
         contract_end_date,
         is_current_in_source
-
-    from contracts
+    from {{ ref('stg_postgres__supplier_contracts') }}
 
 )
 
-select * from final
+select * from stg_postgres__supplier_contracts

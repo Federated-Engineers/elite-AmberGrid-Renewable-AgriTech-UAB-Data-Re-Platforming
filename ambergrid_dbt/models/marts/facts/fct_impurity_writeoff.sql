@@ -1,15 +1,8 @@
 with
 
-writeoffs as (
-
-    select * from {{ ref('stg_google_sheets__impurity_writeoffs') }}
-
-),
-
-final as (
+stg_google_sheets__impurity_writeoffs as (
 
     select
-
         writeoff_id,
         plant_id,
         contaminant_type,
@@ -18,9 +11,8 @@ final as (
         estimated_loss_eur,
         writeoff_date,
         is_current_in_source
-
-    from writeoffs
+    from {{ ref('stg_google_sheets__impurity_writeoffs') }}
 
 )
 
-select * from final
+select * from stg_google_sheets__impurity_writeoffs

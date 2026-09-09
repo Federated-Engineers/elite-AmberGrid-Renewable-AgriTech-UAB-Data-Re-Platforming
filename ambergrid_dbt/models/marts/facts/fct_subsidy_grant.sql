@@ -1,15 +1,8 @@
 with
 
-grants as (
-
-    select * from {{ ref('stg_google_sheets__subsidy_grants') }}
-
-),
-
-final as (
+stg_google_sheets__subsidy_grants as (
 
     select
-
         grant_id,
         plant_id,
         subsidy_type,
@@ -19,9 +12,8 @@ final as (
         amount_eur,
         grant_date,
         is_current_in_source
-
-    from grants
+    from {{ ref('stg_google_sheets__subsidy_grants') }}
 
 )
 
-select * from final
+select * from stg_google_sheets__subsidy_grants

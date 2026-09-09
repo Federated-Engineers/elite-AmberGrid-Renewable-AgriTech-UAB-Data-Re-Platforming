@@ -1,8 +1,13 @@
 with
 
-source as (
+scada_telemetry as (
 
-    select * from {{ source('scada', 'telemetry') }}
+    select
+        raw_record,
+        plant_id,
+        reading_date,
+        source_file_name
+    from {{ source('scada', 'telemetry') }}
 
 ),
 
@@ -25,7 +30,7 @@ renamed as (
         raw_record:plant_name::varchar as _payload_plant_name,
         source_file_name::varchar as _source_file_name
 
-    from source
+    from scada_telemetry
 
 )
 

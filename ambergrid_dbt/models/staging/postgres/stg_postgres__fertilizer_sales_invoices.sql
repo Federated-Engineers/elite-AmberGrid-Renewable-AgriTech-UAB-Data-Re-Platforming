@@ -1,8 +1,13 @@
 with
 
-source as (
+postgres_fertilizer_sales_invoices as (
 
-    select * from {{ source('postgres', 'fertilizer_sales_invoices') }}
+    select
+        raw_record,
+        snapshot_date,
+        source_file_name,
+        loaded_at
+    from {{ source('postgres', 'fertilizer_sales_invoices') }}
 
 ),
 
@@ -25,7 +30,7 @@ renamed as (
         source_file_name::varchar as _source_file_name,
         loaded_at::timestamp_ltz as _last_modified_at
 
-    from source
+    from postgres_fertilizer_sales_invoices
 
 )
 

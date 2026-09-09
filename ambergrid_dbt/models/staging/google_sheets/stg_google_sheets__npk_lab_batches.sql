@@ -1,8 +1,14 @@
 with
 
-source as (
+google_sheets_npk_lab_batches as (
 
-    select * from {{ source('google_sheets', 'npk_lab_batches') }}
+    select
+        raw_record,
+        sheet_row_number,
+        snapshot_date,
+        source_file_name,
+        loaded_at
+    from {{ source('google_sheets', 'npk_lab_batches') }}
 
 ),
 
@@ -25,7 +31,7 @@ renamed as (
         source_file_name::varchar as _source_file_name,
         loaded_at::timestamp_ltz as _last_modified_at
 
-    from source
+    from google_sheets_npk_lab_batches
 
 )
 

@@ -1,15 +1,8 @@
 with
 
-injections as (
-
-    select * from {{ ref('stg_postgres__gas_grid_injection_daily') }}
-
-),
-
-final as (
+stg_postgres__gas_grid_injection_daily as (
 
     select
-
         record_id,
         plant_id,
         injection_date,
@@ -17,9 +10,8 @@ final as (
         injection_pressure_bar,
         revenue_eur,
         is_current_in_source
-
-    from injections
+    from {{ ref('stg_postgres__gas_grid_injection_daily') }}
 
 )
 
-select * from final
+select * from stg_postgres__gas_grid_injection_daily

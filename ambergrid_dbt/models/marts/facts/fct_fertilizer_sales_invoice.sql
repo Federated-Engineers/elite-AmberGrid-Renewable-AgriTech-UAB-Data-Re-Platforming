@@ -1,15 +1,8 @@
 with
 
-invoices as (
-
-    select * from {{ ref('stg_postgres__fertilizer_sales_invoices') }}
-
-),
-
-final as (
+stg_postgres__fertilizer_sales_invoices as (
 
     select
-
         invoice_id,
         plant_id,
         customer_name,
@@ -21,9 +14,8 @@ final as (
         invoice_date,
         due_date,
         is_current_in_source
-
-    from invoices
+    from {{ ref('stg_postgres__fertilizer_sales_invoices') }}
 
 )
 
-select * from final
+select * from stg_postgres__fertilizer_sales_invoices

@@ -1,15 +1,8 @@
 with
 
-plants as (
-
-    select * from {{ ref('stg_postgres__plants') }}
-
-),
-
-final as (
+stg_postgres__plants as (
 
     select
-
         plant_id,
         plant_name,
         plant_type,
@@ -19,9 +12,8 @@ final as (
         num_bioreactors,
         commissioned_date,
         is_current_in_source
-
-    from plants
+    from {{ ref('stg_postgres__plants') }}
 
 )
 
-select * from final
+select * from stg_postgres__plants

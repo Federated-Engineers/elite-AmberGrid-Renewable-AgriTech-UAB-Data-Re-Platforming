@@ -1,8 +1,13 @@
 with
 
-source as (
+postgres_supplier_contracts as (
 
-    select * from {{ source('postgres', 'supplier_contracts') }}
+    select
+        raw_record,
+        snapshot_date,
+        source_file_name,
+        loaded_at
+    from {{ source('postgres', 'supplier_contracts') }}
 
 ),
 
@@ -23,7 +28,7 @@ renamed as (
         source_file_name::varchar as _source_file_name,
         loaded_at::timestamp_ltz as _last_modified_at
 
-    from source
+    from postgres_supplier_contracts
 
 )
 
