@@ -4,7 +4,7 @@ stg_postgres__fertilizer_sales_invoices as (
 
     select
         invoice_id,
-        plant_id,
+        plant_id as facility_id,
         customer_name,
         product_type,
         payment_status,

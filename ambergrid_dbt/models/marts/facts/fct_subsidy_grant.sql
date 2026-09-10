@@ -4,7 +4,7 @@ stg_google_sheets__subsidy_grants as (
 
     select
         grant_id,
-        plant_id,
+        plant_id as facility_id,
         subsidy_type,
         granting_authority,
         officer_name,

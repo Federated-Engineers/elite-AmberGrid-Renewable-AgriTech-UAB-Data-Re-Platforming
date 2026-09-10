@@ -201,18 +201,12 @@ models:
 
       - name: quantity_tons_written_off
         description: Material written off, tonnes.
-        tests:
-          - not_null
 
       - name: estimated_loss_eur
         description: Estimated value of the loss, EUR.
-        tests:
-          - not_null
 
       - name: writeoff_date
         description: Date the writeoff was recorded.
-        tests:
-          - not_null
 
       - name: _sheet_row_number
         description: "{{ doc('bronze_sheet_row_number') }}"

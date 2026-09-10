@@ -4,7 +4,7 @@ stg_google_sheets__impurity_writeoffs as (
 
     select
         writeoff_id,
-        plant_id,
+        plant_id as facility_id,
         contaminant_type,
         inspector_name,
         quantity_tons_written_off,

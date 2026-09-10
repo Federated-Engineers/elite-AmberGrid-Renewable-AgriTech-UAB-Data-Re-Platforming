@@ -5,7 +5,7 @@ stg_postgres__supplier_contracts as (
     select
         contract_id,
         supplier_id,
-        plant_id,
+        plant_id as facility_id,
         waste_type,
         contract_status,
         price_per_ton_eur,

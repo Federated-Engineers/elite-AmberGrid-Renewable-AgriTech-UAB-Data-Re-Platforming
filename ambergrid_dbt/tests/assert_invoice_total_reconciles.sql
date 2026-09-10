@@ -1,7 +1,3 @@
--- An invoice total must equal quantity times unit price. The one cent
--- tolerance absorbs rounding in the source. Nulls fail as well, since a
--- missing value means the total cannot be reconciled at all.
-
 select
 
     invoice_id,

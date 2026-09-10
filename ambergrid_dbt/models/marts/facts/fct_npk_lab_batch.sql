@@ -4,7 +4,7 @@ stg_google_sheets__npk_lab_batches as (
 
     select
         batch_id,
-        plant_id,
+        plant_id as facility_id,
         batch_status,
         technician_name,
         notes,
